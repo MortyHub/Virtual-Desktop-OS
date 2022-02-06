@@ -4,10 +4,12 @@ import webbrowser
 import subprocess
 import os
 import random
+
 window = Tk()
 
 style = Style()
 
+placingX = 120
 
 bg = PhotoImage(file = r"backgrounds/winXP.png")
 label = Label(
@@ -15,6 +17,9 @@ label = Label(
     image=bg
 )
 label.place(x=0, y=0)
+
+
+
 
 # Image Defining
 chromeIcon = PhotoImage(file = r"icons/Chromepng.png")
@@ -84,38 +89,41 @@ def newFil():
     newType.destroy()
     newName.destroy()
 
-
-
-
-
 def right_click(event):
     global newFile
     global newType
     global newName
     newFile = Button(window, text="New File", command=newFil)
-    newType = Text(window, width=5, height=1)
     newName = Text(window, width=5, height=1)
+    newType = Text(window, width=5, height=1)
     newFile.place(x=x, y=y)
     newType.place(x=x+80, y=y)
     newName.place(x=x+80, y=y+20)
+
 
 
 class NewFilee:
     def __init__(self, name, type):
         self.name = name
         self.type = type
+        global placingX
+        placingX += 40
         try:
             with open(f"file/{name}.{type}", "x") as f:
-                pass
+                self.name = Button(window, text="New File", image=blankIcon)
+                self.name.place(x=placingX, y=40)
+
         except:
             with open(f"file/{name}{str(random.randrange(0,1000))}.{type}", "x") as f:
-                pass
-
+                self.name = Button(window, text="New File", image=blankIcon)
+                self.name.place(x=placingX, y=40)
 
 
 window.bind("<Button-3>", right_click)
 window.bind('<Motion>', motion)
+
 window.iconbitmap('icon.ico')
+
 window.title("Desktop")
 window.geometry("500x313")
 window.mainloop()
