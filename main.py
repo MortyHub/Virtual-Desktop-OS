@@ -9,7 +9,7 @@ window = Tk()
 
 style = Style()
 
-placingX = 120
+placingX = 160
 
 bg = PhotoImage(file = r"backgrounds/winXP.png")
 label = Label(
@@ -27,6 +27,7 @@ minIcon = PhotoImage(file = r"icons/minecraft.png")
 pyIcon = PhotoImage(file = r"icons/py.png")
 noteIcon = PhotoImage(file = r"icons/Notepad.png")
 blankIcon = PhotoImage(file = r"icons/blank.png")
+cmdIcon = PhotoImage(file = r"icons/cmd.png")
 
 def webO():
     try:
@@ -49,6 +50,9 @@ def pyOpen():
 def NotepadOpen():
     exec(open("Programs/Notepad.py").read())
 
+def openCMD():
+    exec(open("Programs/cmd.py").read())
+
 # Chrome Button
 
 chrome = Button(window, text="hi",image = chromeIcon, command=webO)
@@ -66,6 +70,11 @@ python.place(x=80, y=40)
 # Notepad Button
 Notepad = Button(window, text="w", image= noteIcon, command=NotepadOpen)
 Notepad.place(x=120, y=40)
+
+# CMD button
+
+CMD = Button(window, text="e", image=cmdIcon, command=openCMD)
+CMD.place(x=160, y=40)
 
 # Taskbar
 
@@ -110,13 +119,21 @@ class NewFilee:
         placingX += 40
         try:
             with open(f"file/{name}.{type}", "x") as f:
-                self.name = Button(window, text="New File", image=blankIcon)
-                self.name.place(x=placingX, y=40)
+                if type == "txt":
+                    self.name = Button(window, text="New File", image=noteIcon)
+                    self.name.place(x=placingX, y=40)
+                else:
+                    self.name = Button(window, text="New File", image=blankIcon)
+                    self.name.place(x=placingX, y=40)
 
         except:
             with open(f"file/{name}{str(random.randrange(0,1000))}.{type}", "x") as f:
-                self.name = Button(window, text="New File", image=blankIcon)
-                self.name.place(x=placingX, y=40)
+                if type == "txt":
+                    self.name = Button(window, text="New File", image=noteIcon)
+                    self.name.place(x=placingX, y=40)
+                else:
+                    self.name = Button(window, text="New File", image=blankIcon)
+                    self.name.place(x=placingX, y=40)
 
 
 window.bind("<Button-3>", right_click)
