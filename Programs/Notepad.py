@@ -7,7 +7,7 @@ window.title("Notepad")
 
 def Savee():
     # Gets value of every text box
-    textt = Tet.get("1.0", "end-1c")
+    textt = e.get("1.0", "end-1c")
     extension = fileEx.get("1.0", "end-1c")
     name = Name.get("1.0", "end-1c")
 
@@ -20,8 +20,10 @@ def Savee():
             f.write(textt)
 
 # Notepad text area
-Tet = Text(window, height=200, width=200, font=("Times New Roman", 10))
-Tet.place(x=0,y=55)
+e = Text(window, height=200, width=200, font=("Times New Roman", 10))
+e.place(x=0,y=55)
+
+
 
 # This is the Save As Button
 Save = Button(window, text="Save As", fg="Red", font=("Times New Roman", 15), command=Savee)
