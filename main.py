@@ -92,38 +92,55 @@ def motion(event):
     y = event.y
 
 def newFil():
-    Fileb = NewFilee(newName.get("1.0", "end-1c"), newType.get("1.0", "end-1c"))
+    Fileb = NewFilee(newName.get("1.0", "end-1c"), newType.get("1.0", "end-1c"), newContent.get("1.0", "end-1c"))
 
     newFile.destroy()
     newType.destroy()
     newName.destroy()
+    newContent.destroy()
 
 def right_click(event):
     global newFile
     global newType
     global newName
+    global newContent
+    try:
+        newFile.destroy()
+        newType.destroy()
+        newName.destroy()
+        newContent.destroy()
+    except:
+        pass
     newFile = Button(window, text="New File", command=newFil)
     newName = Text(window, width=5, height=1)
     newType = Text(window, width=5, height=1)
+    newContent = Text(window, width=5, height=1)
     newFile.place(x=x, y=y)
     newType.place(x=x+80, y=y)
     newName.place(x=x+80, y=y+20)
+    newContent.place(x=x+80, y=y+40)
 
 
-
+# creates new file into the file folder along with placing the file on the desktop
 class NewFilee:
-    def __init__(self, name, type):
+    def __init__(self, name, type, contents):
         self.name = name
         self.type = type
+        self.contents = contents
         global placingX
         placingX += 40
         try:
             with open(f"file/{name}.{type}", "x") as f:
+                print("e")
                 if type == "txt":
-                    self.name = Button(window, text="New File", image=noteIcon)
+                    self.name = Button(window, text=f"{self.name}", image=noteIcon)
                     self.name.place(x=placingX, y=40)
-                else:
-                    self.name = Button(window, text="New File", image=blankIcon)
+                elif type == "cmdl":
+                    self.name = Button(window, text=f"{self.name}", image=cmdIcon, command=lambda: cmdlFile(f"{contents}"))
+                    self.name.place(x=placingX, y=40)
+                    print("a")
+                elif type == "":
+                    self.name = Button(window, text=f"{self.name}", image=blankIcon)
                     self.name.place(x=placingX, y=40)
 
         except:
@@ -135,11 +152,20 @@ class NewFilee:
                     self.name = Button(window, text="New File", image=blankIcon)
                     self.name.place(x=placingX, y=40)
 
+def cmdlFile(a):
+    comd = a
+    if("delete" in comd):
+        comd = comd.split("delete ")
+        try:
+            os.remove(f"file/{comd[1]}")
+        except:
+            print("Invalid File")
+    
 
 window.bind("<Button-3>", right_click)
 window.bind('<Motion>', motion)
 
-window.iconbitmap('icon.ico')
+#window.iconbitmap('icon.ico')
 
 window.title("Desktop")
 window.geometry("500x313")
