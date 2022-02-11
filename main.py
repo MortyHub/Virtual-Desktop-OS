@@ -43,7 +43,7 @@ def OpenMC():
 
 def pyOpen():
     try:
-        os.system("py")
+        os.system("python3")
     except:
         print("Error: python does not exist")
 
