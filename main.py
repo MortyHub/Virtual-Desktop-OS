@@ -9,7 +9,7 @@ window = Tk()
 
 style = Style()
 
-placingX = 160
+placingX = 200
 
 bg = PhotoImage(file = r"backgrounds/winXP.png")
 label = Label(
@@ -17,17 +17,6 @@ label = Label(
     image=bg
 )
 label.place(x=0, y=0)
-
-
-
-
-# Image Defining
-chromeIcon = PhotoImage(file = r"icons/Chromepng.png")
-minIcon = PhotoImage(file = r"icons/minecraft.png")
-pyIcon = PhotoImage(file = r"icons/py.png")
-noteIcon = PhotoImage(file = r"icons/Notepad.png")
-blankIcon = PhotoImage(file = r"icons/blank.png")
-cmdIcon = PhotoImage(file = r"icons/cmd.png")
 
 def webO():
     try:
@@ -53,38 +42,57 @@ def NotepadOpen():
 def openCMD():
     exec(open("Programs/cmd.py").read())
 
-# Chrome Button
-
-chrome = Button(window, text="hi",image = chromeIcon, command=webO)
-chrome.place(x=0,y=40)
-
-
-# Minecraft Button
-Minecraft = Button(window, text="F", image = minIcon, command=OpenMC)
-Minecraft.place(x=40, y=40)
-
-# Python button
-python = Button(window, text="e", image = pyIcon, command=pyOpen)
-python.place(x=80, y=40)
-
-# Notepad Button
-Notepad = Button(window, text="w", image= noteIcon, command=NotepadOpen)
-Notepad.place(x=120, y=40)
-
-# CMD button
-
-CMD = Button(window, text="e", image=cmdIcon, command=openCMD)
-CMD.place(x=160, y=40)
+def openFile():
+    webbrowser.open('file/', new=2)
 
 # Taskbar
 
 taskbar = Canvas(
     window,
-    height=30,
+    height=45,
     width=500,
     bg="#1e2757"
 )
 taskbar.pack()
+
+# Image Defining
+chromeIcon = PhotoImage(file = r"icons/Chromepng.png")
+minIcon = PhotoImage(file = r"icons/minecraft.png")
+pyIcon = PhotoImage(file = r"icons/py.png")
+noteIcon = PhotoImage(file = r"icons/Notepad.png")
+blankIcon = PhotoImage(file = r"icons/blank.png")
+cmdIcon = PhotoImage(file = r"icons/cmd.png")
+winIco = PhotoImage(file = r"icons/Icon.png")
+filIcon = PhotoImage(file = r"icons/FileEx.png")
+
+# Chrome Button
+chrome = Button(window, text="hi",image = chromeIcon, command=webO)
+chrome.place(x=0,y=55)
+
+# Minecraft Button
+Minecraft = Button(window, text="F", image = minIcon, command=OpenMC)
+Minecraft.place(x=40, y=55)
+
+# Python button
+python = Button(window, text="e", image = pyIcon, command=pyOpen)
+python.place(x=80, y=55)
+
+# Notepad Button
+Notepad = Button(window, text="w", image= noteIcon, command=NotepadOpen)
+Notepad.place(x=120, y=55)
+
+# CMD button
+CMD = Button(window, text="e", image=cmdIcon, command=openCMD)
+CMD.place(x=160, y=55)
+
+# File Explorer
+fileex = Button(window, text="fileEx", image=filIcon, command=openFile)
+fileex.place(x=200, y=55)
+# icon
+icon = Button(window, text="Window", image=winIco)
+icon.place(x=5,y=5)
+
+
 def motion(event):
     global x
     global y
@@ -123,7 +131,7 @@ def right_click(event):
 
 # creates new file into the file folder along with placing the file on the desktop
 class NewFilee:
-    def __init__(self, name, type, contents):
+    def __init__(self, name, type, contents = ""):
         self.name = name
         self.type = type
         self.contents = contents
@@ -134,30 +142,73 @@ class NewFilee:
                 print("e")
                 if type == "txt":
                     self.name = Button(window, text=f"{self.name}", image=noteIcon)
-                    self.name.place(x=placingX, y=40)
+                    self.name.place(x=placingX, y=55)
+                    f.write(contents)
                 elif type == "cmdl":
                     self.name = Button(window, text=f"{self.name}", image=cmdIcon, command=lambda: cmdlFile(f"{contents}"))
-                    self.name.place(x=placingX, y=40)
-                    print("a")
-                elif type == "":
+                    self.name.place(x=placingX, y=55)
+                    f.write(contents)
+                else:
                     self.name = Button(window, text=f"{self.name}", image=blankIcon)
-                    self.name.place(x=placingX, y=40)
+                    self.name.place(x=placingX, y=55)
+                    f.write(contents)
 
         except:
             with open(f"file/{name}{str(random.randrange(0,1000))}.{type}", "x") as f:
                 if type == "txt":
                     self.name = Button(window, text="New File", image=noteIcon)
-                    self.name.place(x=placingX, y=40)
+                    self.name.place(x=placingX, y=55)
+                    f.write(contents)
+                elif type == "cmdl":
+                    self.name = Button(window, text="New File", image=cmdIcon, command=lambda: cmdlFile(f"{contents}"))
+                    self.name.place(x=placingX, y=55)
+                    f.write(contents)
                 else:
                     self.name = Button(window, text="New File", image=blankIcon)
-                    self.name.place(x=placingX, y=40)
+                    self.name.place(x=placingX, y=55)
+                    f.write(contents)
+
 
 def cmdlFile(a):
     comd = a
-    if("delete" in comd):
+    if "delete" in comd :
         comd = comd.split("delete ")
         try:
             os.remove(f"file/{comd[1]}")
+        except:
+            print("Invalid File")
+    elif "create" in comd:
+        comd = comd.split("create ")
+        comd = comd[1].split(" ")
+        sets = comd[0]
+        namee = comd[1].split("\"")
+        name2 = namee[1]
+        try:
+            with open(f"file/{name2}.{comd[0]}", "x") as f:
+                pass
+        except:
+            print("File already exists.")
+        
+    elif "editText" in comd:
+        comd = comd.split("editText ")
+        comd = comd[1].split(" ")
+        sett = comd[1].split("\"")
+        text = sett[1]
+        file = comd[0]
+        try:
+            with open(f"file/{file}", "w") as f:
+                f.write(text)
+        except:
+            print("Invalid File")
+    elif "addText" in comd:
+        comd = comd.split("addText ")
+        comd = comd[1].split(" ")
+        sett = comd[1].split("\"")
+        text = sett[1]
+        file = comd[0]
+        try:
+            with open(f"file/{file}", "a") as f:
+                f.write(text)
         except:
             print("Invalid File")
     
