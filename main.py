@@ -45,6 +45,45 @@ def openCMD():
 def openFile():
     webbrowser.open('file/', new=2)
 
+# window icon commands 
+
+def windIco():
+    global stop
+    global close
+    global search
+    global bar
+
+
+    try:
+        deleteBar()
+        try:
+            deleteSearchBar()
+        except:
+            pass
+        bar = Canvas(
+            window,
+            height=40,
+            width=195,
+            bg="#1e2757"
+        )
+        bar.pack()
+        stop = Button(window, text="Close",width=5, command=exit)
+        stop.place(x=173,y=54)
+        search = Button(window, text="Search", width=6, command=openSearchBar)
+        search.place(x=233, y=54)
+        close = Button(window,text="X", width=2, command=deleteBar)
+        close.place(x=303, y=54)
+    except:
+        pass
+
+def deleteBar():
+    try:
+        stop.destroy()
+        search.destroy()
+        close.destroy()
+        bar.destroy()
+    except:
+        pass
 # Taskbar
 
 taskbar = Canvas(
@@ -89,8 +128,38 @@ CMD.place(x=160, y=55)
 fileex = Button(window, text="fileEx", image=filIcon, command=openFile)
 fileex.place(x=200, y=55)
 # icon
-icon = Button(window, text="Window", image=winIco)
+icon = Button(window, text="Window", image=winIco, command=windIco)
 icon.place(x=5,y=5)
+
+def openSearchBar():
+    global SearchArea
+    global TextBar
+    global Submit
+
+    try:
+        stop.destroy()
+        bar.destroy()
+        search.destroy()
+        close.destroy()
+
+        SearchArea = Canvas(
+            window,
+            height=150,
+            width=390, 
+            bg="#808080"
+        )
+        SearchArea.pack()
+        
+        
+
+    except:
+        pass
+
+def deleteSearchBar():
+    SearchArea.destroy()
+    TextBar.destroy()
+    Submit.destroy()
+
 
 
 def motion(event):
