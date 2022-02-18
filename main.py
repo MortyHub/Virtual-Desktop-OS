@@ -4,6 +4,7 @@ import webbrowser
 import subprocess
 import os
 import random
+from Programs.TextDisplay import displayText
 
 window = Tk()
 
@@ -135,6 +136,8 @@ def openSearchBar():
     global SearchArea
     global TextBar
     global Submit
+    global exitS
+    global LabelS
 
     try:
         stop.destroy()
@@ -149,6 +152,14 @@ def openSearchBar():
             bg="#808080"
         )
         SearchArea.pack()
+        TextBar = Text(window, height=1, width=25)
+        TextBar.place(x=150, y=130)
+        LabelS = Label(window, text="File Searching Engine", font=("Times New Roman", 12))
+        LabelS.place(x=155, y=80)
+        Submit = Button(window, text="Search", width=6, command=openFile)
+        Submit.place(x=220, y=160)
+        exitS = Button(window, text="X", width=2, command=deleteSearchBar)
+        exitS.place(x=413, y=50)
         
         
 
@@ -159,8 +170,25 @@ def deleteSearchBar():
     SearchArea.destroy()
     TextBar.destroy()
     Submit.destroy()
+    LabelS.destroy()
+    exitS.destroy()
 
-
+def openFile():
+    File = TextBar.get("1.0", "end-1c")
+    File1 = File.split(".")
+    if File1[1] == "cmdl":
+        try:
+            with open(f"file/{File}", "r") as f:
+                cmdlFile(f.read())
+        except:
+            pass
+    elif File1[1] == "txt":
+        try:
+            with open(f"file/{File}", "r") as f:
+                displayText(f.read())
+        except:
+            pass
+    
 
 def motion(event):
     global x
@@ -210,11 +238,11 @@ class NewFilee:
             with open(f"file/{name}.{type}", "x") as f:
                 print("e")
                 if type == "txt":
-                    self.name = Button(window, text=f"{self.name}", image=noteIcon)
+                    self.name = Button(window, text=f"{self.name}", image=noteIcon, command=lambda: displayText(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
                 elif type == "cmdl":
-                    self.name = Button(window, text=f"{self.name}", image=cmdIcon, command=lambda: cmdlFile(f"{contents}"))
+                    self.name = Button(window, text=f"{self.name}", image=cmdIcon, command=lambda: cmdlFile(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
                 else:
@@ -225,11 +253,11 @@ class NewFilee:
         except:
             with open(f"file/{name}{str(random.randrange(0,1000))}.{type}", "x") as f:
                 if type == "txt":
-                    self.name = Button(window, text="New File", image=noteIcon)
+                    self.name = Button(window, text="New File", image=noteIcon, command=lambda: displayTest(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
                 elif type == "cmdl":
-                    self.name = Button(window, text="New File", image=cmdIcon, command=lambda: cmdlFile(f"{contents}"))
+                    self.name = Button(window, text="New File", image=cmdIcon, command=lambda: cmdlFile(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
                 else:
@@ -285,7 +313,7 @@ def cmdlFile(a):
 window.bind("<Button-3>", right_click)
 window.bind('<Motion>', motion)
 
-#window.iconbitmap('icon.ico')
+window.iconbitmap('icon.ico')
 
 window.title("Desktop")
 window.geometry("500x313")
