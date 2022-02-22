@@ -5,6 +5,7 @@ import subprocess
 import os
 import random
 from Programs.TextDisplay import displayText
+from Languages.BrainF import *
 
 window = Tk()
 
@@ -104,6 +105,7 @@ blankIcon = PhotoImage(file = r"icons/blank.png")
 cmdIcon = PhotoImage(file = r"icons/cmd.png")
 winIco = PhotoImage(file = r"icons/Icon.png")
 filIcon = PhotoImage(file = r"icons/FileEx.png")
+bfbIcon = PhotoImage(file = r"icons/bfbIco.png")
 
 # Chrome Button
 chrome = Button(window, text="hi",image = chromeIcon, command=webO)
@@ -188,6 +190,12 @@ def openFile():
                 displayText(f.read())
         except:
             pass
+    elif File[1] == "bfb":
+        try:
+            with open(f"file/{File}", "r") as f:
+                displayText(main(f.read()))
+        except:
+            pass
     
 
 def motion(event):
@@ -241,10 +249,16 @@ class NewFilee:
                     self.name = Button(window, text=f"{self.name}", image=noteIcon, command=lambda: displayText(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
+
                 elif type == "cmdl":
                     self.name = Button(window, text=f"{self.name}", image=cmdIcon, command=lambda: cmdlFile(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
+                
+                elif type == "bfb":
+                    self.name = Button(window, text=f"{self.name}", image=bfbIcon, command=lambda: displayText(main(f"{self.contents}")))
+                    self.name.place(x=placingX, y=55)
+                    f.write(f"{self.contents}")
                 else:
                     self.name = Button(window, text=f"{self.name}", image=blankIcon)
                     self.name.place(x=placingX, y=55)
@@ -260,6 +274,11 @@ class NewFilee:
                     self.name = Button(window, text="New File", image=cmdIcon, command=lambda: cmdlFile(f"{self.contents}"))
                     self.name.place(x=placingX, y=55)
                     f.write(contents)
+                
+                elif type == "bfb":
+                    self.name = Button(window, text=f"{self.name}", image=bfbIcon, command=lambda: displayText(main(f"{self.contents}")))
+                    self.name.place(x=placingX, y=55)
+                    f.write(f"{self.contents}")
                 else:
                     self.name = Button(window, text="New File", image=blankIcon)
                     self.name.place(x=placingX, y=55)
@@ -313,7 +332,7 @@ def cmdlFile(a):
 window.bind("<Button-3>", right_click)
 window.bind('<Motion>', motion)
 
-window.iconbitmap('icon.ico')
+#window.iconbitmap('icon.ico')
 
 window.title("Desktop")
 window.geometry("500x313")
