@@ -190,11 +190,13 @@ def openFile():
                 displayText(f.read())
         except:
             pass
-    elif File[1] == "bfb":
+    elif File1[1] == "bfb":
         try:
             with open(f"file/{File}", "r") as f:
-                displayText(main(f.read()))
+                print(f.read())
+                displayText(main(f"{f.read()}"))
         except:
+            print("failed")
             pass
     
 
